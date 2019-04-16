@@ -27,7 +27,6 @@ public class Loginaction extends HttpServlet {
                 System.out.println("Connecting to database...");
                 Connection conn = DriverManager.getConnection(connectionUrl);
                 PreparedStatement pst = conn.prepareStatement("select * from dbo.Candidate_List where Application_No  =  ? and Roll_No  =  ?");
-                PreparedStatement pst1 = conn.prepareStatement("insert into dbo.Candidate_List(Intime) values(?)");
                 HttpSession session = request.getSession();
                 pst.setString(1, id);
                 pst.setString(2, pass);
@@ -42,9 +41,6 @@ public class Loginaction extends HttpServlet {
                     if (userNameDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("user")) {
                         //if the user is valid, then this block executes and WE ARE KEEPING THE USER IN A SESSION
                         session.setAttribute("candidate", userNameDB);//THIS IS HOW WE DECLARE THE USER IN A SESSION
-                        java.util.Date date = new java.util.Date();//date object
-                        //pst1.setDate(6, date.getTime());
-                        //rs1 = pst1.executeUpdate();
                         response.sendRedirect("test.jsp");
                     } else if (userNameDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("testincharge")) {
                         session.setAttribute("incharge", userNameDB);

@@ -32,7 +32,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <form action="Testdetails" method="post" id="myform">
-                            <select  name="timer" class="custom-select custom-select-md mt-3">
+                            <select  name="timer" class="custom-select custom-select-md mt-3" required>
                                 <option value="">Set the timer for the test</option>
                                 <option value="60s">60s</option>
                                 <option value="120s">120s</option>
@@ -42,12 +42,12 @@
                             </select>
 
                             <div class="input-group mt-3">
-                                <input id="input" placeholder="Schedule the date and time for the test">
+                                <input name="datetime" id="input" placeholder="Schedule the date and time for the test" required>
                             </div>
 
                             <div class="input-group mt-3">
                                 <div class="custom-file">
-                                    <input name="doc" aria-describedby="inputGroupFileAddon01" id="inputGroupFile01" type="file" class="custom-file-input" accept=".doc, .docx, text/plain , application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" onchange="fileDisplay(this.files)">
+                                    <input name="doc" aria-describedby="inputGroupFileAddon01" id="inputGroupFile01" type="file" class="custom-file-input" accept=".doc, .docx, text/plain , application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" onchange="fileDisplay(this.files)" required>
                                     <label class="custom-file-label" for="inputGroupFile01" id="lbl">Choose file</label>
                                 </div>
                             </div>
