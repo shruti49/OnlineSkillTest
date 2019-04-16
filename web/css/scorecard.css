@@ -1,0 +1,30 @@
+
+.container {
+    border: 2px solid #2eec71;
+    height: 650px;
+}
+
+h3,
+label {
+    color: #000;
+}
+
+label{
+    font-size: 16px;
+}
+
+.form-control {
+    border: 2px solid #2eec71;
+}
+
+@media (min-width: 628px) {
+    .container {
+        max-width: 600px;
+    }
+}
+
+@media (min-width:350px) and (max-width: 576px) {
+    .container {
+        max-width: 500px;
+    }
+}

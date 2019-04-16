@@ -1,0 +1,72 @@
+#navbar {
+    background: #2ECC71;
+}
+
+#logout{
+    text-decoration: none;
+    padding: 10px;
+    float: right;
+    margin-right: 2rem;
+    border-style: none;
+    cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
+    background: #22A7F0;
+    color: #fff;
+}
+
+#logout:hover {
+    text-decoration: none;
+    background: #fff;
+    border: 2px solid #22A7F0;
+    color: #22A7F0;
+    transition: 0.2s;
+}
+
+.navbar-brand {
+    text-transform: uppercase;
+    color: #fff;
+    margin-left: 2rem;
+}
+
+.input-box{
+    height: 400px;
+    border-radius: 5px;
+    font-family: helvetica;
+    font-size: 18px;
+    line-height: 1.5;
+    padding: 10px;
+    overflow-y: scroll; 
+    outline: none;
+    margin:auto;
+    width:1110px;
+    box-shadow: none;
+    resize: none;
+
+}
+
+.input-box:focus{
+    text-decoration: none;
+}
+
+.desc-box{
+    border: 1px solid black;
+    height:50px;  
+    border-radius: 5px;
+}
+
+
+#submit-btn{
+    float:right;
+    margin-right:2rem;
+    margin-top: 5px;
+    color: #fff;
+    outline: none;
+    background: #2ECC71;
+}
+
+#submit-btn:hover{
+    background: #fff;
+    border: 2px solid #2ECC71;
+    color: #2ECC71;
+}
