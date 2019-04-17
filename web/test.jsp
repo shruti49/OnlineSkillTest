@@ -1,4 +1,4 @@
-<%@page import="java.sql.*"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,12 +13,12 @@
     <body oncontextmenu="return false;">
         <%
             //HERE WE GETTING THE ATTRIBUTE DECLARED IN LOGINACTION.JSP AND CHECKING IF IT IS NULL, THE USER WILL BE REDIRECTED TO LOGIN PAGE
-            String uid = (String) session.getAttribute("user");
+            String uid = (String) session.getAttribute("candidate");
             if (uid == null) {
                 response.sendRedirect("login.jsp");
             }
-
-          %>
+            String str = (String)request.getAttribute("data");
+        %>
         <div id="startWindow">
             <div class="modalBox">
                 <h1>Welcome</h1>
@@ -76,7 +76,7 @@
             </ul>
         </nav>
 
-        <nav id="nav"  class="navbar navbar-expand-lg" >
+        <nav id="nav"  class="navbar-expand-lg" >
             <ul class="navbar-nav">
                 <li class="nav-item">            
                     <div id="timer"></div>
@@ -103,7 +103,7 @@
         </nav>    
 
         <div id="para-box">
-            <div class="input-box"></div>
+            <div class="input-box"><%=str%></div>
             <div class="output-box" contenteditable></div>
         </div>
 

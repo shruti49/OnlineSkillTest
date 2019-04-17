@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 import java.sql.*;
 
 public class Test extends HttpServlet {
@@ -15,25 +14,26 @@ public class Test extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            try {
-                String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
-                String connectionUrl = "jdbc:sqlserver://localhost:1433;" + "databaseName=mydb;user=sa;password = admin1234";
+            Connection conn;
+            PreparedStatement pst;
+            ResultSet rs;
+            String content = null;
+            String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+            String connectionUrl = "jdbc:sqlserver://localhost:1433;" + "databaseName=mydb;user=sa;password = admin1234";
 
+            try {
                 Class.forName(driverName);
                 System.out.println("Connecting to database...");
-                Connection conn = DriverManager.getConnection(connectionUrl);
-                PreparedStatement pst = conn.prepareStatement("select * from Test_Detail");
-                //HttpSession session = request.getSession();
-                ResultSet rs = pst.executeQuery();
+                conn = DriverManager.getConnection(connectionUrl);
+                pst = conn.prepareStatement("select docContent from Test_Detail where docId=1");
+                rs = pst.executeQuery();
+
                 while (rs.next()) {
-                    String name = rs.getString(2);
-                    int size = rs.getInt(3);
-                    String timer = rs.getString(4);
-                    int chars = rs.getInt(5);
-                    String extnsn = rs.getString(6);
-                    String con = rs.getString(7);
-                    out.print(name + " " + size + " " + timer + " " + chars + " " + extnsn + " " + con);
+                    content = rs.getString("docContent");
                 }
+                out.print(content);
+                request.setAttribute("data", content);
+                request.getRequestDispatcher("test.jsp").forward(request, response);
 
             } catch (Exception e) {
                 System.out.println("Exception is ;" + e);
@@ -41,15 +41,4 @@ public class Test extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
 }

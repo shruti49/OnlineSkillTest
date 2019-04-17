@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
-import javax.servlet.RequestDispatcher;
 
 public class Testdetails extends HttpServlet {
 
@@ -39,7 +38,8 @@ public class Testdetails extends HttpServlet {
                 // execute insert SQL stetement
                 pst.executeUpdate();
                 System.out.print("Record is inserted into table!");
-                response.sendRedirect("admin_panel.jsp");
+                
+                response.sendRedirect("login.jsp");
             } catch (Exception e) {
                 System.out.println("Exception is ;" + e);
             }
@@ -49,9 +49,7 @@ public class Testdetails extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        RequestDispatcher rd = request.getRequestDispatcher("Test");
-        rd.forward(request, response);
+        processRequest(request, response);
     }
 
 }
