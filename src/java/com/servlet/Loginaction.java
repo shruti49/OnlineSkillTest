@@ -15,7 +15,6 @@ public class Loginaction extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
             String id = request.getParameter("userid");
             String pass = request.getParameter("password");
 
@@ -24,7 +23,7 @@ public class Loginaction extends HttpServlet {
                 String connectionUrl = "jdbc:sqlserver://localhost:1433;" + "databaseName=mydb;user=sa;password = admin1234";
 
                 Class.forName(driverName);
-                System.out.println("Connecting to database...");
+                System.out.println("Connecting to dbo.Candidate_List database...");
                 Connection conn = DriverManager.getConnection(connectionUrl);
                 PreparedStatement pst = conn.prepareStatement("select * from dbo.Candidate_List where Application_No  =  ? and Roll_No  =  ?");
                 HttpSession session = request.getSession();
@@ -34,22 +33,19 @@ public class Loginaction extends HttpServlet {
                 int flag = 0;
                 while (rs.next()) {
                     flag = 1;
-                    String userNameDB = rs.getString("Application_No");
+                    String userDB = rs.getString("Application_No");
                     String passwordDB = rs.getString("Roll_No");
                     String roleDB = rs.getString("Role");
 
-                    if (userNameDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("user")) {
+                    if (userDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("user")) {
                         //if the user is valid, then this block executes and WE ARE KEEPING THE USER IN A SESSION
-                        session.setAttribute("candidate", userNameDB);//THIS IS HOW WE DECLARE THE USER IN A SESSION
-                        response.sendRedirect("test.jsp");
-                    } else if (userNameDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("testincharge")) {
-                        session.setAttribute("incharge", userNameDB);
+                        session.setAttribute("candidate", userDB);//THIS IS HOW WE DECLARE THE USER IN A SESSION
+                        response.sendRedirect("instruction.jsp");
+                    } else if (userDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("testincharge")) {
+                        session.setAttribute("incharge", userDB);
                         response.sendRedirect("testincharge.jsp");
-                    } else if (userNameDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("supertestincharge")) {
-                        session.setAttribute("superIncharge", userNameDB);
-                        response.sendRedirect("supertestincharge.jsp");
-                    } else if (userNameDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("admin")) {
-                        session.setAttribute("adminp", userNameDB);
+                    } else if (userDB.equals(id) && passwordDB.equals(pass) && roleDB.equals("admin")) {
+                        session.setAttribute("adminp", userDB);
                         response.sendRedirect("admin_panel.jsp");
                     }
                 }

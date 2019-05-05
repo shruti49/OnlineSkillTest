@@ -11,7 +11,7 @@
               crossorigin="anonymous">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
         <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-        <title>AdminPanel</title>
+        <title>Admin Panel</title>
     </head>
     <body oncontextmenu="return false;">
         <%
@@ -34,11 +34,11 @@
                         <form action="Testdetails" method="post" id="myform">
                             <select  name="timer" class="custom-select custom-select-md mt-3" required>
                                 <option value="">Set the timer for the test</option>
-                                <option value="60s">60s</option>
-                                <option value="120s">120s</option>
-                                <option value="180s">180s</option>
-                                <option value="240s">240s</option>
-                                <option value="300s">300s</option>
+                                <option value="60">60</option>
+                                <option value="120">120</option>
+                                <option value="180">180</option>
+                                <option value="240">240</option>
+                                <option value="300">300</option>
                             </select>
 
                             <div class="input-group mt-3">
@@ -51,9 +51,16 @@
                                     <label class="custom-file-label" for="inputGroupFile01" id="lbl">Choose file</label>
                                 </div>
                             </div>
+                            <div class="input-group mt-3">
+                                <textarea class="input-box" name="input" readonly></textarea>  
+                            </div>
 
-                            <textarea class="mt-3 input-box" name="input" readonly></textarea>  
-                            <div class="mt-3 desc-box"></div>
+                            <div class="input-group mt-3">
+                                File size : <input id="size" readonly name="size">
+                                File extension : <input id="ext" readonly name="ext">
+                                Total no of characters :<input id="chars" readonly name="chars">
+                            </div>
+
                             <button class="btn"  id="submit-btn" type="submit">Submit</button> 
 
                         </form>

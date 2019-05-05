@@ -8,6 +8,8 @@ var fileTypes = [
 function validFileType(file) {
     for (var i = 0; i < fileTypes.length; i++) {
         if (file.type === fileTypes[i]) {
+            var ext = document.getElementById('ext');
+            ext.value = file.type;
             return true;
         }
     }
@@ -27,12 +29,20 @@ function fileDisplay() {
     var inFile = document.getElementById('inputGroupFile01').files;
     for (var i = 0; i < inFile.length; i++) {
         var lbl = document.querySelector('.custom-file-label');
+        var size = document.getElementById('size');
+        var char = document.getElementById('chars');
         if (validFileType(inFile[i])) {
-            lbl.textContent = 'File name ' + inFile[i].name + ', file size ' + returnFileSize(inFile[i].size) + '.';
+            lbl.textContent = 'File name ' + inFile[i].name;
+            size.value = returnFileSize(inFile[i].size);
+
             var reader = new FileReader();
             reader.readAsText(inFile[i], "UTF-8");
             reader.onload = function (evt) {
-                document.querySelector(".input-box").innerHTML = evt.target.result;
+                const textarea = document.querySelector(".input-box");
+                textarea.innerHTML = evt.target.result;
+                const chars = textarea.innerHTML.length;
+                const words = Math.floor(chars / 5);
+                char.value = chars;
             };
 
         } else {

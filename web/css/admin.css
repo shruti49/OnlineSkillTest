@@ -38,23 +38,15 @@
     padding: 10px;
     overflow-y: scroll; 
     outline: none;
-    margin:auto;
     width:1110px;
     box-shadow: none;
     resize: none;
-
 }
+
 
 .input-box:focus{
     text-decoration: none;
 }
-
-.desc-box{
-    border: 1px solid black;
-    height:50px;  
-    border-radius: 5px;
-}
-
 
 #submit-btn{
     float:right;

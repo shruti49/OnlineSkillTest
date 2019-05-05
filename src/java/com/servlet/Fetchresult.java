@@ -8,12 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 
-public class Test extends HttpServlet {
+public class Fetchresult extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            response.sendRedirect("scorecard.jsp");
+           
             Connection conn;
             PreparedStatement pst;
             ResultSet rs;
@@ -25,20 +27,30 @@ public class Test extends HttpServlet {
                 Class.forName(driverName);
                 System.out.println("Connecting to database...");
                 conn = DriverManager.getConnection(connectionUrl);
-                pst = conn.prepareStatement("select docContent from Test_Detail where docId=1");
-                rs = pst.executeQuery();
-
-                while (rs.next()) {
-                    content = rs.getString("docContent");
-                }
-                out.print(content);
-                request.setAttribute("data", content);
-                request.getRequestDispatcher("test.jsp").forward(request, response);
-
+                pst = conn.prepareStatement("insert into dbo.result values(?,?,?,?)");
+                int wpm = Integer.parseInt(request.getParameter("wpm"));
+                int accuracy = Integer.parseInt(request.getParameter("accuracy"));
+                int error = Integer.parseInt(request.getParameter("error"));
+                System.out.println(wpm);
+                System.out.println(accuracy);
+                System.out.println(error);
+                
             } catch (Exception e) {
                 System.out.println("Exception is ;" + e);
             }
         }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        processRequest(request, response);
     }
 
 }

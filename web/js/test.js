@@ -1,110 +1,145 @@
 
-
 //accessing all the dom elements
-const startWin = document.getElementById('startWindow');
-const startbtn = document.querySelector('.startButton');
-
 const navbarDesign = document.getElementById('navbar-design');
+const nav = document.getElementById('nav');
+const navbar = document.getElementById('navbar');
+const paraBox = document.getElementById('para-box');
 const bold = document.querySelector('.bold');
 const italic = document.querySelector('.italics');
 const underline = document.querySelector('.underline');
 const submitbtn = document.getElementById('submit-btn');
 
-const nav = document.getElementById('nav');
 const timer = document.getElementById('timer');
 const charCount = document.getElementById('char-count');
 const lineCount = document.getElementById('line-count');
 const paraCount = document.getElementById('para-count');
-const wpm = document.getElementById('wpm');
-const incorrect = document.getElementById('incorrect-words');
+const wordspermin = document.getElementById('wpm');
+const incorrect = document.getElementById('error');
 const accuracy = document.getElementById('accuracy');
 
-const paraBox = document.getElementById('para-box');
 const input = document.querySelector('.input-box');
 const output = document.querySelector('.output-box');
 const mytxt = document.getElementById('mytxt');
 
-
 const closeWin = document.getElementById('closeWindow');
 const newTestWindow = document.getElementById('newTestWindow');
 
-let timeLeft = 60;
+let counter = document.getElementById('xyz').value;
+let c = document.getElementById('hide').value;
 
-function test() {
-    startWin.style.display = 'none';
-    navbarDesign.style.display = 'block';
-    nav.style.display = 'block';
-    paraBox.style.display = 'block';
-    timer.textContent = 'Time Left 60';
-    charCount.textContent = 'No Of Characters 0';
-    lineCount.textContent = 'No of lines 0';
-    paraCount.textContent = 'No of paragraphs 0';
-    wpm.textContent = 'Words Per Minute 0';
-    incorrect.textContent = 'Mistyped Words 0';
-    accuracy.textContent = 'Accuracy %';
-}
-//Test will start after clicking this button
-startbtn.addEventListener('click', test);
+let timeStart = null;
+let timeEnd = null;
 
-function endTest() {
-    closeWin.style.display = 'block';
-    navbarDesign.style.display = 'none';
-    nav.style.display = 'none';
-    paraBox.style.display = 'none';
-}
-//Test will end after clicking this button
-submitbtn.addEventListener('click', endTest);
+/**
+ * Words Per Minute
+ * @param {number} characters - Total Number of characters
+ * @param {number} timestamp - Total time taken
+ */
+const calculateWPM = (characters, timestamp) => {
+    const words = characters / 5;
+    return Math.floor
+            (words / (timestamp / 60));
+};
 
+const wpm = () => {
+    timeEnd = new Date(Date.now()).getTime(); // for counting `words per mins`
+    wordspermin.value = calculateWPM(
+            output.innerText.split('').length,
+            (timeEnd - timeStart) / 1000
+            );
+};
 
+output.addEventListener('keydown', wpm);
+/**
+ * Calculates Accuracy
+ * @param {*} inputText - `input.innerText`
+ * @param {*} outputText - `output.innerText.trim()`
+ */
+const calculateAccuracy = (inputText, outputText) => {
+    const sampleText = inputText.split(' ');
+    const typedText = outputText.split(' ');
+    let wrongWords = 0;
 
-function startTimer() {
-    var getTime = setInterval(function () {
-        timeLeft--;
-        timer.textContent = 'Time Left ' + timeLeft + 's';
-
-        if (timeLeft === 0) {
-            clearInterval(getTime);
-            document.body.appendChild(newTestWindow);
-            newTestWindow.style.display = 'block';
-            navbarDesign.style.display = 'none';
+    for (let i = 0; i < sampleText.length; i++) {
+        if (sampleText[i] !== typedText[i] && typedText[i] && sampleText[i]) {
+            wrongWords += 1;
         }
-    }, 1000);
-    output.removeEventListener('keyup', startTimer);
-}
-//Timer will start after typing
-output.addEventListener('keyup', startTimer);
+    }
+    incorrect.value = wrongWords;
+    return (Math.floor(((typedText.length - wrongWords) / sampleText.length) * 100));
+
+};
+
+const acc = () => {
+    accuracy.value = calculateAccuracy(
+            input.innerText,
+            output.innerText.trim()
+            );
+};
+
+output.addEventListener('keydown', acc);
 
 
 const countChars = () => {
-    let characters = output.innerText.split('');
-    charCount.textContent = 'No of characters ' + characters.length;
+    let chars = output.innerText.length;
+    charCount.value = chars + 1;
 };
-output.addEventListener('keyup', countChars);
-
+output.addEventListener('keydown', countChars);
 
 const countLines = () => {
     let lines = output.innerText.split('\n').filter(val => val !== '');
-    lineCount.textContent = 'No of lines ' + lines.length;
+    lineCount.value = lines.length;
 };
 output.addEventListener('keydown', countLines);
 
 
 const countPara = () => {
     let para = output.innerText.match(/\n\n+/g);
-    if (para !== null)
-    {
-        paraCount.textContent = 'No of paragraphs ' + ((para.length) + 1);
+    if (para !== null) {
+        paraCount.value = (para.length) + 1;
     } else {
-        paraCount.textContent = 'No of paragraphs ' + 0;
+        paraCount.value = 0;
     }
-
 };
 output.addEventListener('keydown', countPara);
 
+function myfun() {
+    input.innerHTML = c;
+    let min = Math.floor(counter / 60);
+    let sec = counter % 60;
+    timer.value = `0${min}:0${sec}`;
+}
+
+function store() {
+    window.location.href = "http://localhost:8084/OnlineSkillTest/Storeresult?value1=" + wordspermin.value + "&value2=" + accuracy.value + "&value3=" +incorrect.value;
+}
+
+function countdown() {
+    timeStart = new Date(Date.now()).getTime(); // for counting `words per mins`
+    function timeleft() {
+        counter--;
+        let min = Math.floor(counter / 60);
+        let sec = counter % 60;
+        if (min < 0 && sec < 0) {
+            window.open('testsubmission.jsp');
+            return;
+        }
+        if (sec < 10) {
+            timer.value = `0${min}:0${sec}`;
+        } else {
+            timer.value = `0${min}:${sec}`;
+        }
+    }
+    setInterval(timeleft, 1000);
+    output.removeEventListener('keypress', countdown);
+}
+output.addEventListener('keypress', countdown);
+
+
+
 
 //Disabling the back button
-function disableBack()
-{
+function disableBack() {
     window.history.forward();
 }
 setTimeout("disableBack()", 0);
@@ -112,14 +147,12 @@ window.onunload = function () {
     null;
 };
 
-
 function exeCmd(command) {
     document.execCommand(command, false, null);
 }
+
 
 function fontEditor(command, arg) {
     document.execCommand(command, false, arg);
 }
 
-
- 

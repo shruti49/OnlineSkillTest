@@ -9,8 +9,12 @@
         <servlet-class>com.servlet.Testdetails</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Test</servlet-name>
-        <servlet-class>com.servlet.Test</servlet-class>
+        <servlet-name>Fetchresult</servlet-name>
+        <servlet-class>com.servlet.Fetchresult</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Storeresult</servlet-name>
+        <servlet-class>com.servlet.Storeresult</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Loginaction</servlet-name>
@@ -21,8 +25,12 @@
         <url-pattern>/Testdetails</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Test</servlet-name>
-        <url-pattern>/Test</url-pattern>
+        <servlet-name>Fetchresult</servlet-name>
+        <url-pattern>/Fetchresult</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Storeresult</servlet-name>
+        <url-pattern>/Storeresult</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -23,23 +23,26 @@ public class Testdetails extends HttpServlet {
                 Connection conn = DriverManager.getConnection(connectionUrl);
                 PreparedStatement pst = conn.prepareStatement("insert into dbo.Test_Detail values(?,?,?,?,?,?,?)");
                 String docName = request.getParameter("doc");
+                String docSize = request.getParameter("size");
                 String Timer = request.getParameter("timer");
+                int totalChars = Integer.parseInt(request.getParameter("chars"));
+                String extension = request.getParameter("ext");
                 String inputDoc = request.getParameter("input");
                 String dt = request.getParameter("datetime");
 
                 pst.setString(1, docName);
-                pst.setInt(2, 123);
+                pst.setString(2, docSize);
                 pst.setString(3, Timer);
-                pst.setInt(4, 23);
-                pst.setString(5, "txt");
+                pst.setInt(4, totalChars);
+                pst.setString(5, extension);
                 pst.setString(6, inputDoc);
                 pst.setString(7, dt);
 
                 // execute insert SQL stetement
                 pst.executeUpdate();
                 System.out.print("Record is inserted into table!");
-                
                 response.sendRedirect("login.jsp");
+
             } catch (Exception e) {
                 System.out.println("Exception is ;" + e);
             }

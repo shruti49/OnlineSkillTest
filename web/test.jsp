@@ -1,4 +1,7 @@
-
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalTime"%>
+<%@page import="java.sql.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -10,118 +13,109 @@
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
         <title>Test</title>
     </head>
-    <body oncontextmenu="return false;">
+    <body oncontextmenu="return false;" onload="myfun()">
+
         <%
-            //HERE WE GETTING THE ATTRIBUTE DECLARED IN LOGINACTION.JSP AND CHECKING IF IT IS NULL, THE USER WILL BE REDIRECTED TO LOGIN PAGE
             String uid = (String) session.getAttribute("candidate");
             if (uid == null) {
                 response.sendRedirect("login.jsp");
             }
-            String str = (String)request.getAttribute("data");
-        %>
-        <div id="startWindow">
-            <div class="modalBox">
-                <h1>Welcome</h1>
-                <h4>Instructions</h4>
-                <p>1.Some design features are provided to change the text in italics,bold or increase the size of text,change the font-family.</p>
-                <p>2.There is a timer which will start only when you start typing in the textbox given.</p>
-                <p>3.Your typing speed will be calculated.</p>
-                <p>4.Your accuracy level will be checked using mistyped words.</p>
-                <p>5.You can submit the test anytime.</p>
-                <p>6.After submitting the test the result will be displayed instantaneously.</p>
-                <button class="startButton">Start Test</button>
-            </div>
-        </div>
 
-        <nav   id="navbar-design" class="navbar-expand">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <button class="bold" onclick="exeCmd('bold');"><i class="fas fa-bold"></i></button>
-                </li>
-                <li class="nav-item">
-                    <button class="italics" onclick="exeCmd('italic');"><i class="fas fa-italic"></i></button>
-                </li>  
-                <li class="nav-item">
-                    <button class="underline" onclick="exeCmd('underline');"><i class="fas fa-underline"></i></button>
-                </li>
-                <li class="nav-item">
-                    <button class="ul" onclick="exeCmd('insertUnorderedList');"><i class="fas fa-list-ul"></i></button>
-                </li>
-                <li class="nav-item">
-                    <button class="ol" onclick="exeCmd('insertOrderedList');"><i class="fas fa-list-ol"></i></button>
-                </li>
-                <li class="nav-item">
-                    <button class="strike" onclick="exeCmd('strikethrough');"><i class="fas fa-strikethrough"></i></button>
-                </li>
-                <li class="nav-item">
-                    <select  id="dropdown-size" onchange="fontEditor('fontSize', this.value)">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                    </select>
-                </li>
-                <li class="nav-item">
-                    <select id="dropdown-font" onchange="fontEditor('fontName', this.value)">
-                        <option value="Times New Roman">Times New Roman</option>
-                        <option value="Comic Sans MS">Comic Sans MS</option>
-                        <option value="Helvetica">Helvetica</option>
-                        <option value="calibri">Calibri(Body)</option>
-                        <option value="Arial">Arial</option>
-                    </select>
-                </li>
-                <button class="btn btn-sm"  id="submit-btn" type="submit"><strong>Submit</strong></button>
-            </ul>
+            Connection conn;
+            PreparedStatement pst;
+            ResultSet rs;
+            String content = null;
+            String timer = null;
+            String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+            String connectionUrl = "jdbc:sqlserver://localhost:1433;" + "databaseName=mydb;user=sa;password = admin1234";
+
+            try {
+                Class.forName(driverName);
+                System.out.print("Connecting to dbo.Test_Detail database...");
+                conn = DriverManager.getConnection(connectionUrl);
+                pst = conn.prepareStatement("select testTimer,docContent from dbo.Test_Detail where schedule <= GETDATE()");
+                rs = pst.executeQuery();
+                while (rs.next()) {
+                    content = rs.getString("docContent");
+                    timer = rs.getString("testTimer");
+                }
+            } catch (Exception e) {
+                System.out.println("Exception is ;" + e);
+            }
+        %>
+        <nav id="navbar-design" class="d-flex">
+            <div class="p-1 flex-fill text-center">
+                <button class="bold" onclick="exeCmd('bold');"><i class="fas fa-bold"></i></button>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <button class="italics" onclick="exeCmd('italic');"><i class="fas fa-italic"></i></button>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <button class="underline" onclick="exeCmd('underline');"><i class="fas fa-underline"></i></button>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <button class="ul" onclick="exeCmd('insertUnorderedList');"><i class="fas fa-list-ul"></i></button>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <button class="ol" onclick="exeCmd('insertOrderedList');"><i class="fas fa-list-ol"></i></button>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <button class="strike" onclick="exeCmd('strikethrough');"><i class="fas fa-strikethrough"></i></button>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <select id="dropdown-size" onchange="fontEditor('fontSize', this.value)">
+                    <option value="1">Font Size-1</option>
+                    <option value="2">Font Size-2</option>
+                    <option value="3">Font Size-3</option>
+                    <option value="4">Font Size-4</option>
+                    <option value="5">Font Size-5</option>
+                    <option value="6">Font Size-6</option>
+                </select>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <select id="dropdown-font" onchange="fontEditor('fontName', this.value)">
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Comic Sans MS">Comic Sans MS</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="calibri">Calibri(Body)</option>
+                    <option value="Arial">Arial</option>
+                </select>
+            </div>
+            <div class="p-1 flex-fill text-center">
+                <button id="submit-btn" onclick="store()">Submit</button>
+            </div>
         </nav>
 
-        <nav id="nav"  class="navbar-expand-lg" >
-            <ul class="navbar-nav">
-                <li class="nav-item">            
-                    <div id="timer"></div>
-                </li>
-                <li class="nav-item">           
-                    <div id="char-count"></div>
-                </li>
-                <li class="nav-item">           
-                    <div id="line-count"></div>
-                </li>
-                <li class="nav-item">           
-                    <div id="para-count"></div>
-                </li>
-                <li class="nav-item">           
-                    <div id="incorrect-words"></div>
-                </li>
-                <li class="nav-item">           
-                    <div id="accuracy"></div>
-                </li>
-                <li class="nav-item">           
-                    <div id="wpm"></div>
-                </li>
-            </ul>
-        </nav>    
+        <nav id="nav" class="d-flex">
+            <div id="nav-item" class="flex-fill text-center">Time Left</div>
+            <div id="nav-item" class="flex-fill text-center">No of chars</div>
+            <div id="nav-item" class="flex-fill text-center">No of lines</div>
+            <div id="nav-item" class="flex-fill text-center">No of paragraphs</div>
+            <div id="nav-item" class="flex-fill text-center">Words Per Minute</div>
+            <div id="nav-item" class="flex-fill text-center">Accuracy</div>
+            <div id="nav-item" class="flex-fill text-center">Error</div>
+        </nav>
+        <!--<form action="Storeresult" method="post">-->
+        <nav id="navbar" class="d-flex justify-content-between">
+            <input type="hidden" id="xyz" value='<%=timer%>' >
+            <input id="timer" value="00:00" class="text-right">
+            <input id="char-count" value="0" class="text-center" readonly>
+            <input id="line-count" value="0" class="text-center" readonly>
+            <input id="para-count" value="0" class="text-center" readonly>
+            <input id="wpm" value="0" class="text-right" readonly>
+            <input id="accuracy" value="0" class="text-right" readonly>
+            <input id="error" value="0" class="text-center" readonly>
+        </nav>
+        <!--</form>-->
 
-        <div id="para-box">
-            <div class="input-box"><%=str%></div>
-            <div class="output-box" contenteditable></div>
+        <div id="para-box" class="d-flex flex-column">
+            <textarea id="hide" style="display:none;"><%=content%></textarea>
+            <div class="input-box p-2 m-2"></div>
+            <div class="output-box p-2 m-2" contenteditable></div>
         </div>
 
-        <div id="closeWindow">
-            <div class="modalBox2">
-                <h3>You have successfully submitted the test.</h3>
-                <br>
-                <a href="scorecard.jsp" class="endButton">Close</a>
-            </div>
-        </div>
-
-        <div id="newTestWindow">
-            <div class="modalBox3">
-                <h3>Time's Up!</h3>
-                <a href="scorecard.jsp" class="newTestButton">Close</a>
-            </div>
-        </div>
         <script src="js/test.js"></script>
     </body>
 
 </html>
+
