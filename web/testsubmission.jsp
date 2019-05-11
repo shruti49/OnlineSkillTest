@@ -101,14 +101,14 @@
             <div class="modalBox2">
                 <h3>You have successfully submitted the test.</h3>
                 <br>
-                <a href="http://localhost:8084/OnlineSkillTest/Fetchresult" class="endButton">Close</a>
+                <a href="scorecard.jsp" class="endButton">Close</a>
             </div 
         </div>
 
         <div id="newTestWindow">
             <div class="modalBox3">
                 <h3>Time's Up!</h3>
-                <a href="http://localhost:8084/OnlineSkillTest/Fetchresult" class="newTestButton">Close</a>
+                <a href="scorecard.jsp" class="newTestButton">Close</a>
             </div>
         </div>
     </body>

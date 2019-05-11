@@ -1,4 +1,8 @@
 
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.Connection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -21,13 +25,6 @@
         %>
         <nav class="navbar-expand-md  justify-content-between nav">
             <h3 class="navbar-brand">Online Skill Test Portal</h3>
-            <li class="nav-item">
-                <select id="dropdown-font" onchange="fontEditor('fontName', this.value)">
-                    <option value="Times New Roman">less than 35 wpm and accuracy</option>
-                    <option value="Comic Sans MS">35 wpm and accuracy</option>
-                    <option value="Helvetica">more than 35 wpm and accuracy</option>
-                </select>
-            </li>
         </nav>
 
         <table class="table table-bordered">
@@ -39,49 +36,37 @@
                     <th scope="col">Accuracy</th>
                     <th scope="col">Errors</th>
                     <th scop="col">Time Duration</th>
-                    <th scope="col">Completion Time</th>
-
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
+            <%
+                Connection conn;
+                PreparedStatement pst;
+                ResultSet rs;
+                String driverName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
+                String connectionUrl = "jdbc:sqlserver://localhost:1433;" + "databaseName=mydb;user=sa;password = admin1234";
 
-                </tr>
-                <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                     <td>the Bird</td>
-                    <td>@twitter</td>
-                    <td>@mdo</td>
-                    <td>@mdo</td>
-                </tr>
-            </tbody>
+                try {
+                    Class.forName(driverName);
+                    System.out.print("Connecting to dbo.Test_Detail database...");
+                    conn = DriverManager.getConnection(connectionUrl);
+                    pst = conn.prepareStatement("select * from dbo.result");
+                    rs = pst.executeQuery();
+                    while (rs.next()) {
+            %>
+            <tr>
+                <td><%=rs.getString("ApplicationNo")%></td>
+                <td><%=rs.getString("TestId")%></td>
+                <td><%=rs.getString("wpm")%></td>
+                <td><%=rs.getString("accuracy")%></td>
+                <td><%=rs.getString("error")%></td>
+                <td><%= rs.getString("TestDuration")%></td>
+            </tr>
+            <%
+                    }
+                } catch (Exception e) {
+                    System.out.println("Exception is ;" + e);
+                }
+            %>
         </table>
 
     </body>

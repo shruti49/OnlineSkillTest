@@ -41,7 +41,7 @@
                 Class.forName(driverName);
                 System.out.println("Connecting to database...");
                 conn = DriverManager.getConnection(connectionUrl);
-                pst = conn.prepareStatement("select * from dbo.Result where ApplicationNo=uid");
+                pst = conn.prepareStatement("select * from dbo.result");
                 rs = pst.executeQuery();
 
                 while (rs.next()) {
@@ -75,12 +75,12 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="wpm">Words per minute</label>
-                            <input value="<%=wpm%>" class="form-control" id="wpm" readonly>
+                            <input value="<%=wpm%>wpm" class="form-control" id="wpm" readonly>
                         </div>
 
                         <div class="form-group col-md-6">
                             <label for="accuracy">Accuracy</label>
-                            <input value="<%=acc%>" class="form-control" id="accuracy" readonly>
+                            <input value="<%=acc%>%" class="form-control" id="accuracy" readonly>
                         </div>
                     </div>
 
@@ -92,7 +92,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="time">Test Duration</label>
-                            <input value="<%=dur%>" class="form-control" id="time" readonly>
+                            <input value="<%=dur%>secs" class="form-control" id="time" readonly>
                         </div>
                         <div class="form-group col-md-6 mt-5">
                             <label for="csign">Candidate signature</label>

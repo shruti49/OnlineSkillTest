@@ -39,10 +39,8 @@ public class Storeresult extends HttpServlet {
                 while (rs1.next()) {
                     id = rs1.getInt("docId");
                     timer = rs1.getString("testTimer");
-                    System.out.println(id);
-                    System.out.println(timer);
                 }
-                pst = conn.prepareStatement("insert into dbo.Result values(?,?,?,?,?,?)");
+                pst = conn.prepareStatement("insert into dbo.result values(?,?,?,?,?,?)");
                 String no = (String) session.getAttribute("candidate");
                 int wpm = Integer.parseInt(request.getParameter("value1"));
                 String accuracy = request.getParameter("value2");

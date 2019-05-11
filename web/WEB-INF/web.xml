@@ -9,10 +9,6 @@
         <servlet-class>com.servlet.Testdetails</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Fetchresult</servlet-name>
-        <servlet-class>com.servlet.Fetchresult</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Storeresult</servlet-name>
         <servlet-class>com.servlet.Storeresult</servlet-class>
     </servlet>
@@ -23,10 +19,6 @@
     <servlet-mapping>
         <servlet-name>Testdetails</servlet-name>
         <url-pattern>/Testdetails</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Fetchresult</servlet-name>
-        <url-pattern>/Fetchresult</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Storeresult</servlet-name>
